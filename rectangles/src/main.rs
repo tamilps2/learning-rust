@@ -13,8 +13,9 @@ impl Rectangle {
         self.width > other.width && self.height > other.height
     }
 
+    // associated method, does not take self. i.e a static method, belongs to the struct rather than an instance.
     fn square(size: u32) -> Rectangle {
-        Rectangle {width: size, height: size}
+        Rectangle {width: size, height: size} // returns an instance of the struct
     }
 }
 
