@@ -62,7 +62,7 @@ fn main() {
     let i = ImportantExcerpt { part: first_sentence };
 }
 
-/// ------- Separate code
+/// ------- Separate code: Following code won't compile because of lifetime.
 
 fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
     if x.len() > y.len() {
