@@ -61,3 +61,27 @@ fn main() {
 
     let i = ImportantExcerpt { part: first_sentence };
 }
+
+/// ------- Separate code
+
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+
+fn main() {
+    /// 'a lifetime
+    let string1 = String::from("test");
+    let result;                         
+    {
+        /// 'b lifetime
+        let string2 = String::from("sdf");
+        result = longest(string1.as_str(), string2.as_str());
+    } /// 'b dropped here
+    
+    println!("longest string is: {}", result);
+    /// 'a dropped here
+}
