@@ -61,3 +61,56 @@ fn main() {
 
     let i = ImportantExcerpt { part: first_sentence };
 }
+
+/// ------- Case 2: Following code won't compile because of lifetime.
+
+fn longest<'a>(x: &'a str, y: &'a str) -> &'a str {
+    if x.len() > y.len() {
+        x
+    } else {
+        y
+    }
+}
+
+fn main() {
+    /// 'a lifetime
+    let string1 = String::from("test");
+    let result;                         
+    {
+        /// 'b lifetime
+        let string2 = String::from("sdf");
+        result = longest(string1.as_str(), string2.as_str());
+    } /// 'b dropped here
+    
+    println!("longest string is: {}", result);
+    /// 'a dropped here
+}
+
+/// Case 3: 
+
+struct ImportantExcerpt<'very_long_life> {
+    part: &'very_long_life str
+}
+
+fn main() {
+    // 'a
+    let i: ImportantExcerpt;
+    let mut novel = String::from("Call me Ishmael. Some years ago...");
+    
+    novel.push_str(". test");
+
+    {
+        // 'b
+        // If novel is declared here, then will get destroyed after this scope end.
+        // So the following will not execute if uncommented.
+        // let mut novel = String::from("Call me Ishmael. Some years ago...");
+        let first_sentence = novel.split(".")
+            .next()
+            .expect("separator not found");
+        
+        i = ImportantExcerpt { part: &first_sentence };
+    } // 'b get destroyed
+
+    println!("The first sentence is : {}", i.part);
+    // 'a destroyed here.
+}
